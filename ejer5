@@ -1,0 +1,59 @@
+//Penalización L1 (Lasso)
+# Definir la función de costo con penalización L1
+def cost_function_l1(X, y, theta, lambda_):
+    m = len(y)  # Número de muestras
+    predictions = X @ theta  # Predicciones del modelo
+    error = predictions - y  # Error
+    cost = (1 / (2 * m)) * (error.T @ error)  # Costo base sin regularización
+    
+    # Agregar la penalización L1 (lambda * suma de valores absolutos de los coeficientes)
+    l1_penalty = lambda_ * sum(abs(theta))
+    
+    return cost + l1_penalty
+
+# Ejemplo de datos (simples para ilustrar)
+import numpy as np
+X = np.array([[1, 2], [2, 3], [3, 4]])  # Características
+y = np.array([5, 7, 9])  # Etiquetas
+theta = np.array([0.1, 0.2])  # Coeficientes iniciales
+
+lambda_ = 0.01  # Parámetro de regularización
+
+# Calcular el costo con penalización L1
+cost_l1 = cost_function_l1(X, y, theta, lambda_)
+print(f"Costo con penalización L1: {cost_l1}")
+//Penalización L2 (Ridge)
+# Definir la función de costo con penalización L2
+def cost_function_l2(X, y, theta, lambda_):
+    m = len(y)  # Número de muestras
+    predictions = X @ theta  # Predicciones del modelo
+    error = predictions - y  # Error
+    cost = (1 / (2 * m)) * (error.T @ error)  # Costo base sin regularización
+    
+    # Agregar la penalización L2 (lambda * suma de los cuadrados de los coeficientes)
+    l2_penalty = lambda_ * sum(theta ** 2)
+    
+    return cost + l2_penalty
+
+# Calcular el costo con penalización L2
+cost_l2 = cost_function_l2(X, y, theta, lambda_)
+print(f"Costo con penalización L2: {cost_l2}")
+//Normalización Manual
+# Función para normalizar los datos (Min-Max Normalization)
+def normalize_min_max(X):
+    X_min = X.min(axis=0)  # Mínimo por columna
+    X_max = X.max(axis=0)  # Máximo por columna
+    X_norm = (X - X_min) / (X_max - X_min)
+    return X_norm
+
+# Normalizar las características
+X_normalized = normalize_min_max(X)
+print("Características normalizadas:")
+print(X_normalized)
+
+# Ahora, podemos calcular los costos usando las características normalizadas
+cost_l1_normalized = cost_function_l1(X_normalized, y, theta, lambda_)
+cost_l2_normalized = cost_function_l2(X_normalized, y, theta, lambda_)
+
+print(f"Costo con penalización L1 (normalizado): {cost_l1_normalized}")
+print(f"Costo con penalización L2 (normalizado): {cost_l2_normalized}")
